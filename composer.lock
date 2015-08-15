@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c70d14b40be3ac286925abf8ec03fabb",
+    "hash": "226542af76154899a2488f76117c4911",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2375,16 +2375,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.3",
+            "version": "4.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d"
+                "reference": "55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/fd3050e26e3105f416d74c4d33aea659b406c59d.zip",
-                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d",
+                "url": "http://packagist.phpcomposer.com/files/sebastianbergmann/phpunit/55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7.zip",
+                "reference": "55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7",
                 "shasum": ""
             },
             "require": {
@@ -2443,7 +2443,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-10 09:16:56"
+            "time": "2015-08-15 04:21:23"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

@@ -11,6 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function()
+{
+	return View::make('index');
+});
+
+// 登录与登出
+Route::controller('admin/auth', 'Auth\AuthController');
+
+// 需要登录的路由
+Route::group(array('prefix' => '/admin', 'before' => 'auth'), function(){
+    
+    //backend
+    Route::get('/', 'Backend\HomeController@index');
+    Route::controller('post', 'Backend\PostController');
+    Route::controller('link', 'Backend\LinkController');
+    Route::controller('user', 'Backend\UserController');
+    Route::controller('comment', 'Backend\CommentController');
+    Route::controller('system', 'Backend\SystemController');
+    Route::controller('category', 'Backend\CategoryController');
+
 });

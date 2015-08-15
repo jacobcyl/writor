@@ -1,27 +1,56 @@
-## Laravel PHP Framework
+## writor
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+基于Laravel框架开发的博客系统。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+> 只完成了后台管理部分，前台请根据需求自行开发。
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
 
-## Official Documentation
+###Usage
+---
+1. clone writor到你的服务器环境
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+	```
+	cd www #你的服务器放网站的目录
+	git clone https://github.com/overtrue/writor.git
+	```
 
-## Contributing
+1. 切换到`composer.json`所在目录，使用composer安装项目
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+	> 如果没有安装过composer请先安装：<br>
+ 	linux/OSX: [https://getcomposer.org/doc/00-intro.md#installation-nix](https://getcomposer.org/doc/00-intro.md#installation-nix)<br>
+ 	windows: [https://getcomposer.org/doc/00-intro.md#installation-windows](https://getcomposer.org/doc/00-intro.md#installation-windows)
 
-## Security Vulnerabilities
+	```
+	cd www/writor
+	composer install
+	```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+1. 修改`bootstrap/start.php`中`27`行的环境配置，里面有说明。
+1. 修改数据库配置`app/config/database.php`，如果你没改上面的start.php中的环境部分的话请修改`app/config/production/database.php`。
+1. 修改`app/storage/` 目录权限为可写,*nix下 执行：
 
-### License
+    ```
+    sudo chmod -R 755 app/storage/
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+1. 初始管理员的用户名为`admin`,密码为`admin`,你想修改可以在`app/database/seeds/UserTableSeeder.php`中修改初始人员信息再执行安装
+1. 安装数据库
+
+    ```
+    php artisan migrate #安装数据表结构
+    php artisan db:seed #初始化管理员
+    ```
+
+1. 开启重写模块:使用`apache`请开启`mod_rewrite`,使用`nginx`同学请参考这个配置示例：[https://gist.github.com/davzie/3938080](https://gist.github.com/davzie/3938080)
+
+1. 那么现在访问`http://yourhost/writor/public/admin` 应该会跳转到后台登录页。
+
+###友情提示
+---
+- 因为本项目还在持续开发中，如果你想跟进开发进度请点击右上角的`watch`以便于收到更新邮件通知。
+- 如果你的网络慢，使用composer install老半天没反应，你可以直接拷其它laravel项目的vendor目录放到本目录就好。
+然后再执行一下：`composer dumpautoload`，如果运行不起来，试试`composer install`。:smiley:
+
+> 当然别忘记点上面的 star 哦! :stuck_out_tongue_winking_eye:
+
+####感谢支持！
