@@ -54,6 +54,9 @@ var Login = Login || {};
 					Login.setPercentage(40 + random_pct);
 					// Send data to the server
 					$.ajax({
+						headers: {
+							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+						},
 						url: baseurl + '/admin/auth/login',
 						method: 'POST',
 						dataType: 'json',
@@ -331,7 +334,7 @@ var Login = Login || {};
 			
 			// Create Progress Circle
 			var bg = Login.lockscreen_progress_canvas,
-				ctx = ctx = bg.getContext('2d'),
+				ctx = bg.getContext('2d'),
 				imd = null,
 				circ = Math.PI * 2,
 				quart = Math.PI / 2,

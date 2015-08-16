@@ -1,10 +1,10 @@
 <?php namespace App\Http\Controllers\Backend;
 
 use \View;
-use \Input;
-use \Comment;
-use \Redirect;
-use \Validator;
+use Input;
+use App\Comment;
+use Redirect;
+use Validator;
 
 class CommentController extends BaseController {
 

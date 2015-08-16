@@ -3,7 +3,7 @@
 use \DB;
 use \View;
 use App\User;
-use \Auth;
+use Auth;
 use App\Category;
 use App\Post;
 use Input;
@@ -30,7 +30,10 @@ class PostController extends BaseController {
     public function getAll()
     {
         $posts = Auth::user()->posts()->paginate(5);
-
+//        echo "<pre>";
+//        print_r($posts);
+//        echo "</pre>";
+//        exit;
         return View::make('backend.pages.post-all')->withPosts($posts);
     }
         

@@ -7,6 +7,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+
 class User extends Eloquent implements AuthenticatableContract, CanResetPasswordContract  {
 
 	const STATUS_NORMAL   = 1;   //正常
@@ -28,7 +29,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	 */
 	public function posts()
 	{
-		return $this->hasMany('Post', 'post_author')->with('TermRelation');
+		return $this->hasMany('App\Post', 'post_author')->with('TermRelation');
 	}
 
 	/**

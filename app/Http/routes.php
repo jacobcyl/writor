@@ -17,10 +17,10 @@ Route::get('/', function()
 });
 
 // 登录与登出
-Route::controller('admin/auth', 'Auth\AuthController');
+Route::controller('admin/auth', 'Backend\AuthController');
 
 // 需要登录的路由
-Route::group(array('prefix' => '/admin', 'before' => 'auth'), function(){
+Route::group(array('prefix' => '/admin', 'middleware' => 'auth'), function(){
     
     //backend
     Route::get('/', 'Backend\HomeController@index');

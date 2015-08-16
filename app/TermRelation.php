@@ -14,7 +14,7 @@ class TermRelation extends Eloquent {
      */
     public function category()
     {
-        return $this->belongsTo('Category', 'category_id');
+        return $this->belongsTo('App\Category', 'category_id');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use \View;
 use \Input;
-use \User;
+use App\User;
 use \Redirect;
 use \Validator;
 
@@ -15,9 +15,8 @@ class UserController extends BaseController {
 	 */
 	public function getAll()
 	{
-		$users = User::orderBy('id', 'DESC')->paginate(5);
-
-		return View::make('backend.pages.user-all')->withUsers($users);
+		$users =  User::orderBy('id', 'DESC')->paginate(5);
+		return view('backend.pages.user-all')->withUsers($users);
 	}
 
 	/**

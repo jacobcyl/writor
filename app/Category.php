@@ -1,7 +1,8 @@
 <?php
 namespace App;
 
-use \Tree;
+use Tree;
+use Closure;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 class Category extends Eloquent {
 

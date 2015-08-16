@@ -55,14 +55,14 @@
                         无
                         @endif
                     </td>
-                    <td>{{$post->view_count}}</td>
-                    <td>{{$post->comment_count}}</td>
+                    <td>{{ $post->view_count }}</td>
+                    <td>{{ $post->comment_count }}</td>
                 </tr>
                 @endforeach
                 @endif
             </tbody>
         </table>
-        
+        {!! $posts->appends(Input::only('order', 'status'))->render() !!}
     </div>
 </div>
 @endsection

@@ -5,6 +5,7 @@
 @section('content')
       <div class="row">
         <form action="{{url('/admin/post/create')}}" method="post" accept-charset="utf-8" class="form-horizontal">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <div class="col-md-12 form-group">
             <input type="text" class="form-control " name="title" value="" placeholder="文章标题"><br>
           </div>

@@ -57,7 +57,7 @@
             </tbody>
         </table>
         <div>
-        {{$users->appends(Input::only('order', 'status'))->links('backend.pager')}}
+        {!! $users->appends(Input::only('order', 'status'))->render() !!}
         </div>
     </div>
 </div>

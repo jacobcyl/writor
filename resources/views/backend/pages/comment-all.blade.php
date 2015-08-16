@@ -56,7 +56,7 @@
             </tbody>
         </table>
         <div class="pull-right">
-            {{$comments->links()}}
+            {{$comments->render()}}
         </div>
     </div>
 </div>

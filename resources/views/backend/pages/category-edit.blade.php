@@ -9,6 +9,7 @@
             <div class="panel panel-primary" data-collapsed="0">
                 <div class="panel-body">
                     <form action="{{url('/admin/category/update', ['id' => $category->id])}}" method="post" accept-charset="utf-8" class="">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <label class="control-label">名称</label>
                             <input type="text" name="name" class="form-control" placeholder="" value="{{Input::old('name', $category->name)}}">
