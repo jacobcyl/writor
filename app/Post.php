@@ -26,12 +26,11 @@ class Post extends Eloquent {
     public function categories($toArray = true)
     {
         $categories = array();
-        $term_relation = $this->termRelation();
+        $term_relation = $this->termRelation()->get();
 //        print_r($term_relation);
         foreach ($term_relation as $termRelation) {
             !$termRelation->category || $categories[] = $toArray ? $termRelation->category->toArray() : $termRelation->category;
         }
-
         return $categories;
     }
 
