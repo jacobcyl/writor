@@ -36,7 +36,7 @@
         <!-- logo -->
         <div class="logo">
           <a href="{{url('admin')}}">
-            <h1>Writor</h1>
+            <h1>LingTong</h1>
           </a>
         </div>
         <!-- logo collapse icon -->
@@ -104,6 +104,38 @@
           </a>
         </li>
 
+        <li>
+          <a href="{{ url('/admin/push/all') }}">
+            <i class="entypo-message"></i>
+            <span>消息推送</span>
+          </a>
+          <ul>
+            <li>
+              <a href="{{ url('/admin/push/make') }}">
+                <i class="entypo-make"></i>
+                <span>编辑消息</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url('/admin/push/all') }}">
+                <i class="entypo-log"></i>
+                <span>推送日志</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url('/admin/push/analysis') }}">
+                <i class="entypo-analysis"></i>
+                <span>推送分析</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ url('/admin/push/setting') }}">
+                <i class="entypo-setting"></i>
+                <span>推送分析</span>
+              </a>
+            </li>
+          </ul>
+        </li>
         <!-- <li>
           <a href="">
             <i class="entypo-tools"></i>
