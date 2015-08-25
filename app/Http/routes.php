@@ -13,7 +13,8 @@
 
 Route::get('/', function()
 {
-	return View::make('index');
+	//return View::make('index');
+    return "hello world";
 });
 
 // 登录与登出
@@ -24,6 +25,7 @@ Route::group(array('prefix' => '/admin', 'middleware' => 'auth'), function(){
     
     //backend
     Route::get('/', 'Backend\HomeController@index');
+    Route::controller('resource', 'Backend\ResourceController');
     Route::controller('post', 'Backend\PostController');
     Route::controller('link', 'Backend\LinkController');
     Route::controller('user', 'Backend\UserController');
