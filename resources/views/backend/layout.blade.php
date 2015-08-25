@@ -60,6 +60,20 @@
           </a>
         </li>
         <li>
+          <a href="{{ url('/admin/mall/home') }}">
+            <i class="entypo-dropbox"></i>
+            <span>货场</span>
+          </a>
+          <ul>
+            <li>
+              <a href="{{ url('/admin/resource/all') }}">
+                <i class="entypo-bag"></i>
+                <span>现货资源</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
           <a href="{{ url('/admin/post/all') }}">
             <i class="entypo-doc-text-inv"></i>
             <span>文章</span>
