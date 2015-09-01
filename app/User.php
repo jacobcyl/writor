@@ -14,6 +14,10 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	const STATUS_DISABLED = 0; //禁用
 	use Authenticatable, CanResetPassword;
 
+    // blowfish
+    private static $algo = '$2a';
+    // cost parameter
+    private static $cost = '$10';
 
 	/**
 	 * The database table used by the model.
@@ -37,7 +41,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('user_pass');
+	protected $hidden = array('password');
 
 	public function getStatusNameAttribute()
 	{
@@ -69,7 +73,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	 */
 	public function getAuthPassword()
 	{
-		return $this->user_pass;
+		return $this->password;
 	}
 
 	/**
@@ -79,7 +83,7 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	 */
 	public function getReminderEmail()
 	{
-		return $this->user_email;
+		return $this->email;
 	}
 
 	/**
@@ -112,5 +116,15 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	{
 		return 'remember_token';
 	}
+
+	public function getAuthSalt()
+	{
+		return self::$algo . self::$cost . '$' . self::unique_salt();
+	}
+
+    // mainly for internal use
+    public static function unique_salt() {
+        return substr(sha1(mt_rand()), 0, 22);
+    }
 
 }

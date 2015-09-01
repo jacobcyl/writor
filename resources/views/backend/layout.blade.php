@@ -125,13 +125,13 @@
           </a>
           <ul>
             <li>
-              <a href="{{ url('/admin/push/make') }}">
+              <a href="{{ url('/admin/push/build') }}">
                 <i class="entypo-make"></i>
                 <span>编辑消息</span>
               </a>
             </li>
             <li>
-              <a href="{{ url('/admin/push/all') }}">
+              <a href="{{ url('/admin/push/record') }}">
                 <i class="entypo-log"></i>
                 <span>推送日志</span>
               </a>
@@ -283,8 +283,8 @@
       <div class="tips text-danger">
           <i class="pull-right">✕</i>
           <ul>
-          @foreach($errors->all('<li class="pad-y-5">:message</li>') as $error)
-              {{$error}}
+          @foreach($errors->all('<li class="pad-y-5">:message</li>') as $message)
+              {!! $message !!}
           @endforeach
           </ul>
       </div>
@@ -294,7 +294,7 @@
       <footer class="main">
         &copy; {{date('Y')}} <strong>Writor</strong>
         Powered by 
-        <a href="http://writor.me" target="_blank">Writor Blog Framework</a>
+        <a href="#" target="_blank">Writor Blog Framework & Laravel </a>
       </footer>
     </div>
   </div>

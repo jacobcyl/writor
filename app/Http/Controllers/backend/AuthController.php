@@ -46,7 +46,7 @@ class AuthController extends BaseController {
         //这里的key必须叫password,如果你的数据库里密码字段不叫password,
         //请修改app/models/Use.php 中的 getAuthPassword 方法，返回您的字段名即可
         $user = array(
-                'user_login' => Input::get('username'),
+                'username' => Input::get('username'),
                 'password'   => Input::get('password'),
                 );
 
@@ -92,7 +92,7 @@ class AuthController extends BaseController {
     public function postRemind()
     {
         $credentials = array(
-                        'user_email' =>  Input::get('email'),
+                        'email' =>  Input::get('email'),
                        );
         switch ($response = Password::remind($credentials))
         {

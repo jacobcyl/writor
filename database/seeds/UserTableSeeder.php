@@ -1,5 +1,7 @@
 <?php
-
+use App\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
 class UserTableSeeder extends Seeder {
 
     public function run()
@@ -7,14 +9,12 @@ class UserTableSeeder extends Seeder {
         DB::table('users')->truncate();
 
         User::create(array(
-                      'user_login' => 'admin',
-                      'user_pass' => Hash::make('admin'),
-                      'user_nicename' => 'admin',
-                      'user_email' => 'admin@admin.com',
-                      'user_url' => 'http://www.joychao.cc',
-                      'user_activation_key' => '',
-                      'user_status' => 0,
-                      'display_name' => 'Joy chao',
+                      'username' => 'admin',
+                      'password' => Hash::make('admin'),
+                      'nickname' => 'admin',
+                      'email' => 'admin@admin.com',
+                      'status' => 0,
+                      'display_name' => 'jacob Chen',
                     ));
     }
 

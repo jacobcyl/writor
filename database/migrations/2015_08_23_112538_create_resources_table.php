@@ -16,17 +16,17 @@ class CreateResourcesTable extends Migration
             $table->increments('id');
             $table->string('user_id', 23);
             $table->integer('category');
-            $table->string('resource_name', 100)->nullable();
+            $table->string('resource_name', 100);
             $table->integer('quantity');
             $table->integer('unit')->nullable()->default(0);
             $table->integer('price');
-            $table->string('content')->nullable();
+            $table->string('content')->nullable()->default("");
             $table->integer('place');
             $table->string('img');
             $table->integer('video')->nullable()->default(0);
-            $table->tinyInteger('status')->default(1); //COMMENT 'ÉÏ¼Ü/ÏÂ¼Ü',
+            $table->tinyInteger('status')->default(1); //COMMENT 'ä¸Šæž¶/ä¸‹æž¶',
             $table->tinyInteger('valid')->default(1);
-            $table->integer('view_count')->nullable()->default(0);//ä¯ÀÀ×ÜÊý
+            $table->integer('view_count')->nullable()->default(0);//æµè§ˆæ€»æ•°
             $table->string('expire');
             $table->timestamps();
         });

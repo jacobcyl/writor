@@ -144,6 +144,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
     ],
 
     /*
@@ -191,7 +192,18 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+        'Activation'=> Cartalyst\Sentinel\Laravel\Facades\Activation::class,
+        'Reminder'  => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
+        'Sentinel'  => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
     ],
+
+    'getui'=>[
+        'host'      => "http://sdk.open.api.igexin.com/apiex.htm",
+        'appid'     => "YCVux32lZFAkI8sVuOdsa7",
+        'appkey'    => "rnJCsO5CtVAFgJs1rLzjW",
+        'appsecret' => "y3WHOY0D8b8u2F9I5kGZQ",
+        'masterSecret'=> "D9NpkQ5AJ16SlfavFsG1u1",
+    ],
+
 
 ];
