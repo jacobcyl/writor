@@ -284,7 +284,7 @@
           <i class="pull-right">✕</i>
           <ul>
           @foreach($errors->all('<li class="pad-y-5">:message</li>') as $error)
-              {{$error}}
+              {!! $error !!}
           @endforeach
           </ul>
       </div>

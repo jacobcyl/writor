@@ -11,6 +11,7 @@
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                 <form action="{{url('/admin/user/create')}}" method="post" accept-charset="utf-8" class="form-horizontal">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">用户名</label>
                         <div class="col-sm-10">
