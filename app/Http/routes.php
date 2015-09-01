@@ -32,5 +32,5 @@ Route::group(array('prefix' => '/admin', 'middleware' => 'auth'), function(){
     Route::controller('comment', 'Backend\CommentController');
     Route::controller('system', 'Backend\SystemController');
     Route::controller('category', 'Backend\CategoryController');
-
+    Route::controller('push', 'Backend\PushController');
 });

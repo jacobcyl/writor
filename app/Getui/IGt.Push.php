@@ -1,4 +1,7 @@
 <?php
+/**
+ * VERSION 3.3.2.1
+ */
 header("Content-Type: text/html; charset=utf-8");
 require_once(dirname(__FILE__) . '/' . 'protobuf/pb_message.php');
 require_once(dirname(__FILE__) . '/' . 'igetui/IGt.Req.php');
@@ -13,6 +16,10 @@ require_once(dirname(__FILE__) . '/' . 'igetui/template/IGt.NotificationTemplate
 require_once(dirname(__FILE__) . '/' . 'igetui/template/IGt.TransmissionTemplate.php');
 require_once(dirname(__FILE__) . '/' . 'igetui/template/IGt.NotyPopLoadTemplate.php');
 require_once(dirname(__FILE__) . '/' . 'igetui/template/IGt.APNTemplate.php');
+require_once(dirname(__FILE__) . '/' . 'igetui/utils/GTConfig.php');
+require_once(dirname(__FILE__) . '/' . 'igetui/utils/HttpManager.php');
+require_once(dirname(__FILE__) . '/' . 'igetui/utils/ApiUrlRespectUtils.php');
+require_once(dirname(__FILE__) . '/' . 'igetui/utils/LangUtils.php');
 
 
 
@@ -20,96 +27,108 @@ Class IGeTui
 {
     var $appkey; //第三方 标识
     var $masterSecret; //第三方 密钥
-    var $debug = true;
     var $format = "json"; //默认为 json 格式
     var $host = '';
     var $needDetails = false;
-    var $serviceMap = array();
+    static $appkeyUrlList = array();
+    var $domainUrlList =  array();
 
-   
-       public function __construct($host, $appkey, $masterSecret)
+    public function __construct($domainUrl, $appkey, $masterSecret)
     {
-        $this->host = $host;
         $this->appkey = $appkey;
         $this->masterSecret = $masterSecret;
-        $hosts=array();
-        if (strlen($this->host)==0 ||$this->host==NULL)
-            $hosts = $this->getConnOSServerHostList();
-        else
-           array_push($hosts,$this->host);
-        $this->getfasthost_nt($hosts);
-         
-    }
 
-  public function getfasthost_nt($hosts)
-    {   
-		if (count($hosts)==1)
-          $this->host= $hosts[0];
-		else{
-				 $mint=3.0;
-					$s_url="";
-				for ($i=0;$i<count($hosts);$i++)
+        if ($domainUrl==NULL || strlen($domainUrl) == 0)
         {
-            $start = array_sum(explode(" ",microtime()));
-
-			$opts = array(  
-               'http'=>array(  
-                  'method'=>"GET",  
-               'timeout'=>3,  
-              )  );  
-			$context = stream_context_create($opts); 		 
-			try {
-            $homepage = file_get_contents($hosts[$i], false, $context);
-				} catch (Exception $e) {
-            throw new Exception("host:[" . $this->host);
-				 }
-            $ends = array_sum(explode(" ",microtime()));
-
-            if ($homepage==NULL ||$homepage="")
-              $diff=3.0;
-            else
-              $diff=$ends-$start;
-            if ($mint > $diff)
-            {$mint=$diff;
-                $s_url=$hosts[$i];}
+            $this->domainUrlList =  GTConfig::getDefaultDomainUrl();
         }
-        
-            $this->host =$s_url;
-			var_dump( $this->host);
+        else
+        {
+            $this->domainUrlList = array($domainUrl);
         }
-            
+        $this->initOSDomain(null);
     }
 
+    private function initOSDomain($hosts)
+    {
+        if($hosts == null || count($hosts) == 0)
+        {
+            $hosts = isset(IGeTui::$appkeyUrlList[$this->appkey])?IGeTui::$appkeyUrlList[$this->appkey]:null;
+            if($hosts == null || count($hosts) == 0)
+            {
+                $hosts = $this->getOSPushDomainUrlList($this->domainUrlList,$this->appkey);
+                IGeTui::$appkeyUrlList[$this->appkey] = $hosts;
+            }
+        }
+        else
+        {
+            IGeTui::$appkeyUrlList[$this->appkey] = $hosts;
+        }
+        $this->host = ApiUrlRespectUtils::getFastest($this->appkey, $hosts);
+        return $this->host;
+    }
 
-   public function getConnOSServerHostList()
-   {
-       $la=$this->getConfigOsServerHostList();
-	    if ($la!=NULL && count($la)!=0)
-           return $la;
-        if ($la ==NULL|| count($la)==0)
-           $la=array(
-               "http://sdk.open.api.gepush.com/serviceex",
-              "http://sdk.open.api.getui.net/serviceex",
-               "http://sdk.open.api.igexin.com/serviceex");          
-       return $la;
+    public function getOSPushDomainUrlList($domainUrlList,$appkey)
+    {
+        $urlList = null;
+        $postData = array();
+        $postData['action']='getOSPushDomailUrlListAction';
+        $postData['appkey'] = $appkey;
+        $ex = null;
+        foreach($domainUrlList as $durl)
+        {
+            try
+            {
+                $response = $this->httpPostJSON($durl,$postData);
+                $urlList =  isset($response["osList"])?$response["osList"]:null;
+                if($urlList != null && count($urlList) > 0)
+                {
+                    break;
+                }
+            }
+            catch (Exception $e)
+            {
+                $ex = $e;
+            }
+        }
+        if($urlList == null || count($urlList) <= 0)
+        {
+            throw new Exception("Can not get hosts from ".$domainUrlList."|error:".$ex);
+        }
+        return $urlList;
+    }
 
-   }
+    function httpPostJSON($url,$data,$gzip=false)
+    {
+        if($url == null){
+            $url = $this->host;
+        }
+        $rep = HttpManager::httpPostJson($url, $data, $gzip);
+        if($rep != null)
+        {
+            if ( 'sign_error' == $rep['result']) {
+                try
+                {
+                    if ($this->connect())
+                    {
+                        $rep = HttpManager::httpPostJson($url, $data, $gzip);
+                    }
+                }
+                catch (Exception $e)
+                {
+                    throw new Exception("连接异常".$e);
+                }
+            }
+            else if('domain_error' == $rep['result'])
+            {
+                $this->initOSDomain(isset($rep["osList"])?$rep["osList"]:null);
+                $rep = HttpManager::httpPostJson($url, $data, $gzip);
+            }
+        }
+        return $rep;
+    }
 
-
-   public function getConfigOsServerHostList()
-
-   {
-       $surl = 'http://sdk.open.apilist.igexin.com/os_list';
-       $homepage = trim(file_get_contents($surl));
-       $csv = explode("\r\n", $homepage);
-       for ($i = 0; $i < count($csv); $i++) {
-           if ($csv[$i] == ""||strpos($csv[$i],"http")!=0)
-               unset($csv[$i]);
-       }
-      return $csv;
-   }
-
-   public  function connect()
+    public  function connect()
     {
         $timeStamp = $this->micro_time();
         // 计算sign值
@@ -121,14 +140,19 @@ Class IGeTui
         $params["appkey"] = $this->appkey;
         $params["timeStamp"] = $timeStamp;
         $params["sign"] = $sign;
-        $data = $this->createParam($params);
-        $result = $this->httpPost($data);
-        $rep = json_decode($result, true);
+        $rep = HttpManager::httpPostJson($this->host,$params,false);
         if ('success' == $rep['result']) {
             return true;
         }
         throw new Exception("appKey Or masterSecret is Auth Failed");
-        return false;
+    }
+
+    public function close()
+    {
+        $params = array();
+        $params["action"] = "close";
+        $params["appkey"] = $this->appKey;
+        HttpManager::httpPostJson($this->host,$params,false);
     }
 
     /**
@@ -137,11 +161,26 @@ Class IGeTui
      * @param  IGtTarget target
      * @return Array {result:successed_offline,taskId:xxx}  || {result:successed_online,taskId:xxx} || {result:error}
      ***/
-    public function pushMessageToSingle($message, $target)
+    public function pushMessageToSingle($message, $target, $requestId = null)
     {
-        $params = array();
+        if($requestId == null || trim($requestId) == "")
+        {
+            $requestId = uniqid();
+        }
+        $params = $this->getSingleMessagePostData($message, $target, $requestId);
+        return $this->httpPostJSON($this->host,$params);
+    }
 
+
+    function getSingleMessagePostData($message, $target, $requestId = null){
+        $params = array();
         $params["action"] = "pushMessageToSingleAction";
+        $params["appkey"] = $this -> appkey;
+        if($requestId != null)
+        {
+            $params["requestId"] = $requestId;
+        }
+
         $params["clientData"] = base64_encode($message->get_data()->get_transparent());
         $params["transmissionContent"] = $message->get_data()->get_transmissionContent();
         $params["isOffline"] = $message->get_isOffline();
@@ -156,109 +195,26 @@ Class IGeTui
         // 默认都为消息
         $params["type"] = 2;
         $params["pushType"] = $message->get_data()->get_pushType();
-
-        return $this->httpPostJSON($params);
+        return $params;
     }
 
-    public function pushAPNMessageToSingle($appId, $deviceToken, $message)
+    public function getContentId($message,$taskGroupName = null)
     {
-        $params = array();
-
-        $params['action'] = 'apnPushToSingleAction';
-        $params['appId'] = $appId;
-        $params['appkey'] = $this->appkey;
-        $params['DT'] = $deviceToken;
-        $params['PI'] = base64_encode($message->get_data()->get_pushInfo()->SerializeToString());
-
-        return $this->httpPostJSON($params);
+        return $this->getListAppContentId($message,$taskGroupName);
     }
-	
-    /**
-     * 获取消息ID
-     * @param  IGtMessage message, String taskGroupName
-     * @return String contentId
-     ***/
-    public function getContentId($message, $taskGroupName = null)
-    {
-        $params = array();
-
-		if (!is_null($taskGroupName) && trim($taskGroupName) != ""){
-    		if(strlen($taskGroupName) > 40){
-    			throw new Exception("TaskGroupName is OverLimit 40");
-    		}
-            $params["taskGroupName"] = $taskGroupName;
-	    }
-
-        
-        $params["action"] = "getContentIdAction";
-        $params["appkey"] = $this->appkey;
-        $params["clientData"] = base64_encode($message->get_data()->get_transparent());
-        $params["transmissionContent"] = $message->get_data()->get_transmissionContent();
-        $params["isOffline"] = $message->get_isOffline();
-        $params["offlineExpireTime"] = $message->get_offlineExpireTime();
-        // 增加pushNetWorkType参数(0:不限;1:wifi;2:4G/3G/2G)
-        $params["pushNetWorkType"] = $message->get_pushNetWorkType();
-
-        $params["pushType"] = $message->get_data()->get_pushType();
-        $params["type"] = 2;
-        if ($message instanceof IGtAppMessage)
-            $params["speed"] = $message->get_speed();
-        //contentType 1是appMessage，2是listMessage
-        if ($message instanceof IGtListMessage){
-            $params["contentType"] = 1;
-        } else {
-            $params["contentType"] = 2;            
-            $params["appIdList"] = $message->get_appIdList();
-            $params["phoneTypeList"] = $message->get_phoneTypeList();
-            $params["provinceList"] = $message->get_provinceList();
-            $params["tagList"] = $message->get_tagList();
-
-        }
-		
-
-        $rep = $this->httpPostJSON($params);
-
-        return $rep['result'] == 'ok' ? $rep['contentId'] : '';
-    }
-
-    /**
-     * 获取apn contentId
-     * @param $appId
-     * @param $message
-     * @return string
-     */
-    public function getAPNContentId($appId, $message)
-    {
-        $params = array();
-
-        $params["action"] = "apnGetContentIdAction";
-        $params["appkey"] = $this->appkey;
-        $params["appId"] = $appId;
-        $params["PI"] = base64_encode($message->get_data()->get_pushInfo()->SerializeToString());
-
-        $rep = $this->httpPostJSON($params);
-
-        return $rep['result'] == 'ok' ? $rep['contentId'] : '';
-    }
-
-
 
     /**
      *  取消消息
      * @param  String  contentId
      * @return boolean
      ***/
-    public function cancleContentId($contentId)
+    public function cancelContentId($contentId)
     {
-
         $params = array();
-
         $params["action"] = "cancleContentIdAction";
+        $params["appkey"] = $this->appKey;
         $params["contentId"] = $contentId;
-
-
-        $rep = $this->httpPostJSON($params);
-
+        $rep = $this->httpPostJSON($this->host,$params);
         return $rep['result'] == 'ok' ? true : false;
     }
 
@@ -270,21 +226,152 @@ Class IGeTui
      ***/
     public function pushMessageToList($contentId, $targetList)
     {
-
         $params = array();
-
         $params["action"] = "pushMessageToListAction";
+        $params["appkey"] = $this-> appkey;
         $params["contentId"] = $contentId;
-        $params["targetList"] = $targetList;
+        $needDetails = GTConfig::isPushListNeedDetails();
+        $params["needDetails"] = $needDetails;
+        $async = GTConfig::isPushListAsync();
+        $params["async"] = $async;
+        if($async && (!$needDetails))
+        {
+            $limit = GTConfig::getAsyncListLimit();
+        }
+        else
+        {
+            $limit = GTConfig::getSyncListLimit();
+        }
+        if(count($targetList) > $limit)
+        {
+            throw new Exception("target size:".count($targetList)." beyond the limit:".$limit);
+        }
+        $clientIdList = array();
+        $aliasList= array();
+        $appId = null;
+        foreach($targetList as $target)
+        {
+            $targetCid = $target->get_clientId();
+            $targetAlias = $target->get_alias();
+            if($targetCid != null)
+            {
+                array_push($clientIdList,$targetCid);
+            }elseif($targetAlias != null)
+            {
+                array_push($aliasList,$targetAlias);
+            }
+            if($appId == null)
+            {
+                $appId = $target->get_appId();
+            }
+
+        }
+        $params["appId"] = $appId;
+        $params["clientIdList"] = $clientIdList;
+        $params["aliasList"] = $aliasList;
         $params["type"] = 2;
-		$needDetails = getenv("needDetails");
-		if('true'==$needDetails) {
-			$params["needDetails"] = true;
-		} else {
-			$params["needDetails"] = false;
-		}
-        
-        return $this->httpPostJSON($params);
+        return $this->httpPostJSON($this->host,$params,true);
+    }
+
+    public function stop($contentId)
+    {
+        $params = array();
+        $params["action"] = "stopTaskAction";
+        $params["appkey"] = $this->appkey;
+        $params["contentId"] = $contentId;
+        $rep = $this->httpPostJSON($this->host, $params);
+        if ("ok" == $rep["result"]) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getClientIdStatus($appId, $clientId)
+    {
+        $params = array();
+        $params["action"] = "getClientIdStatusAction";
+        $params["appkey"] = $this->appkey;
+        $params["appId"] = $appId;
+        $params["clientId"] = $clientId;
+        return $this->httpPostJSON($this->host, $params);
+    }
+
+    public  function setClientTag($appId, $clientId, $tags)
+    {
+        $params = array();
+        $params["action"] = "setTagAction";
+        $params["appkey"] = $this->appkey;
+        $params["appId"] = $appId;
+        $params["clientId"] = $clientId;
+        $params["tagList"] = $tags;
+        return $this->httpPostJSON($this->host, $params);
+    }
+
+    public function pushMessageToApp($message, $taskGroupName = null)
+    {
+        $contentId = $this->getListAppContentId($message, $taskGroupName);
+        $params = array();
+        $params["action"] = "pushMessageToAppAction";
+        $params["appkey"] = $this->appkey;
+        $params["contentId"] = $contentId;
+        $params["type"] = 2;
+        return $this->httpPostJSON($this->host,$params);
+    }
+
+    private function getListAppContentId($message, $taskGroupName = null)
+    {
+        $params = array();
+        if (!is_null($taskGroupName) && trim($taskGroupName) != ""){
+            if(strlen($taskGroupName) > 40){
+                throw new Exception("TaskGroupName is OverLimit 40");
+            }
+            $params["taskGroupName"] = $taskGroupName;
+        }
+        $params["action"] = "getContentIdAction";
+        $params["appkey"] = $this->appkey;
+        $params["clientData"] = base64_encode($message->get_data()->get_transparent());
+        $params["transmissionContent"] = $message->get_data()->get_transmissionContent();
+        $params["isOffline"] = $message->get_isOffline();
+        $params["offlineExpireTime"] = $message->get_offlineExpireTime();
+        // 增加pushNetWorkType参数(0:不限;1:wifi;2:4G/3G/2G)
+        $params["pushNetWorkType"] = $message->get_pushNetWorkType();
+        $params["pushType"] = $message->get_data()->get_pushType();
+        $params["type"] = 2;
+        //contentType 1是appMessage，2是listMessage
+        if ($message instanceof IGtListMessage){
+            $params["contentType"] = 1;
+        } else {
+            $params["contentType"] = 2;
+            $params["appIdList"] = $message->get_appIdList();
+            $params["phoneTypeList"] = $message->get_phoneTypeList();
+            $params["provinceList"] = $message->get_provinceList();
+            $params["tagList"] = $message->get_tagList();
+            $params["speed"] = $message->get_speed();
+
+        }
+        $rep = $this->httpPostJSON($this->host,$params);
+        if($rep['result'] == 'ok')
+        {
+            return $rep['contentId'];
+        }else{
+            throw new Exception("host:[".$this->host."]" + "获取contentId失败:".$rep);
+        }
+    }
+
+    public function getBatch()
+    {
+        return new IGtBatch($this->appkey,$this);
+    }
+
+    public function pushAPNMessageToSingle($appId, $deviceToken, $message)
+    {
+        $params = array();
+        $params['action'] = 'apnPushToSingleAction';
+        $params['appId'] = $appId;
+        $params['appkey'] = $this->appkey;
+        $params['DT'] = $deviceToken;
+        $params['PI'] = base64_encode($message->get_data()->get_pushInfo()->SerializeToString());
+        return $this->httpPostJSON($this->host,$params);
     }
 
     /**
@@ -297,136 +384,50 @@ Class IGeTui
     public function pushAPNMessageToList($appId, $contentId, $deviceTokenList)
     {
         $params = array();
-
         $params["action"] = "apnPushToListAction";
         $params["appkey"] = $this->appkey;
         $params["appId"] = $appId;
         $params["contentId"] = $contentId;
         $params["DTL"] = $deviceTokenList;
-        $needDetails = getenv("needDetails");
-        if('true'==$needDetails) {
-            $params["needDetails"] = true;
-        } else {
-            $params["needDetails"] = false;
-        }
-
-        return $this->httpPostJSON($params);
+        $needDetails = GTConfig::isPushListNeedDetails();
+        $params["needDetails"]=$needDetails;
+        return $this->httpPostJSON($this->host,$params);
     }
-    
-
-    public function pushMessageToApp($message, $taskGroupName = null)
-    {       
-        
-        $contentId = $this->getContentId($message, $taskGroupName);
-
-        $params = array();
-        $params["action"] = "pushMessageToAppAction";
-        $params["appkey"] = $this->appkey;
-        $params["contentId"] = $contentId;
-        $params["type"] = 2;
-        
-        return $this->httpPostJSON($params);
-    }
-
-    public function stop($contentId)
+    /**
+     * 获取apn contentId
+     * @param $appId
+     * @param $message
+     * @return string
+     */
+    public function getAPNContentId($appId, $message)
     {
         $params = array();
-
-        $params["action"] = "stopTaskAction";
-        $params["appkey"] = $this->appkey;
-        $params["contentId"] = $contentId;
-
-        try {
-            $rep = $this->httpPostJSON($params);
-            if ("ok" == $rep["result"]) {
-                return true;
-            }
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "取消任务失败：" . $e->getTraceAsString());
-        }
-        return false;
-    }
-
-    public function getClientIdStatus($appId, $clientId)
-    {
-        $params = array();
-
-        $params["action"] = "getClientIdStatusAction";
+        $params["action"] = "apnGetContentIdAction";
         $params["appkey"] = $this->appkey;
         $params["appId"] = $appId;
-        $params["clientId"] = $clientId;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "获取用户状态失败：" . $e->getTraceAsString());
+        $params["PI"] = base64_encode($message->get_data()->get_pushInfo()->SerializeToString());
+        $rep = $this->httpPostJSON($this->host,$params);
+        if($rep['result'] == 'ok'){
+            return $rep['contentId'];
+        }else{
+            throw new Exception("host:[".$this->host."]" + "获取contentId失败:".$rep);
         }
     }
-
-    public  function setClientTag($appId, $clientId, $tags)
-    {
-        $params = array();
-
-        $params["action"] = "setTagAction";
-        $params["appkey"] = $this->appkey;
-        $params["appId"] = $appId;
-        $params["clientId"] = $clientId;
-        $params["tagList"] = $tags;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "setTag失败：" . $e->getTraceAsString());
-        }
-    }
-
-    public function getUserTags($appId, $clientId) {
-        $params = array();
-        $params["action"] = "getUserTags";
-        $params["appkey"] = $this->appkey;
-        $params["appId"] = $appId;
-        $params["clientId"] = $clientId;
-        try {
-            return $this->httpPostJson($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "getUserTags失败：" . $e->getTraceAsString());
-        }
-    }
-
-    public function getPushResult( $taskId) {
-        $params = array();
-        $params["action"] = "getPushMsgResult";
-        $params["appkey"] = $this->appkey;
-        $params["taskId"] = $taskId;
-        try {
-            return $this->httpPostJson($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "getPushResult失败：" . $e->getTraceAsString());
-        }
-    }
-
 
     public function bindAlias($appId, $alias, $clientId)
     {
         $params = array();
-
         $params["action"] = "alias_bind";
         $params["appkey"] = $this->appkey;
         $params["appid"] = $appId;
         $params["alias"] = $alias;;
         $params["cid"] = $clientId;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "bindAlias失败：" . $e->getTraceAsString());
-        }
+        return $this->httpPostJSON($this->host,$params);
     }
 
     public function bindAliasBatch($appId, $targetList)
     {
         $params = array();
-
         $aliasList = array();
         foreach($targetList as  $target) {
             $user = array();
@@ -438,67 +439,41 @@ Class IGeTui
         $params["appkey"] = $this->appkey;
         $params["appid"] = $appId;
         $params["aliaslist"] = $aliasList;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "bindAlias失败：" . $e->getTraceAsString());
-        }
+        return $this->httpPostJSON($this->host,$params);
     }
 
     public function queryClientId($appId, $alias)
     {
         $params = array();
-
         $params["action"] = "alias_query";
         $params["appkey"] = $this->appkey;
         $params["appid"] = $appId;
         $params["alias"] = $alias;;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "queryClientId失败：" . $e->getTraceAsString());
-        }
-
+        return $this->httpPostJSON($this->host, $params);
     }
 
     public function queryAlias($appId, $clientId)
     {
         $params = array();
-
         $params["action"] = "alias_query";
         $params["appkey"] = $this->appkey;
         $params["appid"] = $appId;
         $params["cid"] = $clientId;
-
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "queryAlias失败：" . $e->getTraceAsString());
-        }
-
+        return $this->httpPostJSON($this->host, $params);
     }
 
     public function unBindAlias($appId, $alias, $clientId=null)
     {
         $params = array();
-
         $params["action"] = "alias_unbind";
         $params["appkey"] = $this->appkey;
         $params["appid"] = $appId;
         $params["alias"] = $alias;
-
         if (!is_null($clientId) && trim($clientId) != "")
         {
             $params["cid"] = $clientId;
         }
-        try {
-            return $this->httpPostJSON($params);
-        } catch (Exception $e) {
-            throw new Exception("host:[" . $this->host . "]" . "unBindAlias失败：" . $e->getTraceAsString());
-        }
-
+        return $this->httpPostJSON($this->host, $params);
     }
 
     public function unBindAliasAll($appId, $alias)
@@ -506,10 +481,45 @@ Class IGeTui
         return $this->unBindAlias($appId, $alias);
     }
 
-    private function debug($log)
-    {
-        if ($this->debug)
-            echo ($log) . "\r\n";
+    public function getPushResult( $taskId) {
+        $params = array();
+        $params["action"] = "getPushMsgResult";
+        $params["appkey"] = $this->appkey;
+        $params["taskId"] = $taskId;
+        return $this->httpPostJson($this->host, $params);
+    }
+
+    public function getUserTags($appId, $clientId) {
+        $params = array();
+        $params["action"] = "getUserTags";
+        $params["appkey"] = $this->appkey;
+        $params["appId"] = $appId;
+        $params["clientId"] = $clientId;
+        return $this->httpPostJson($this->host, $params);
+    }
+
+    public function queryAppPushDataByDate($appId, $date){
+        if(!LangUtils::validateDate($date)){
+            throw new Exception("DateError|".$date);
+        }
+        $params = array();
+        $params["action"] = "queryAppPushData";
+        $params["appkey"] = $this->appkey;
+        $params["appId"] = $appId;
+        $params["date"] = $date;
+        return $this->httpPostJson($this->host, $params);
+    }
+
+    public function queryAppUserDataByDate($appId, $date){
+        if(!LangUtils::validateDate($date)){
+            throw new Exception("DateError|".$date);
+        }
+        $params = array();
+        $params["action"] = "queryAppUserData";
+        $params["appkey"] = $this->appkey;
+        $params["appId"] = $appId;
+        $params["date"] = $date;
+        return $this->httpPostJson($this->host, $params);
     }
 
     private function micro_time()
@@ -517,80 +527,5 @@ Class IGeTui
         list($usec, $sec) = explode(" ", microtime());
         $time = ($sec . substr($usec, 2, 3));
         return $time;
-    }
-
-    private function httpPostJSON($params)
-    {
-        $params["version"] = "3.0.0.0";
-        $data = $this->createParam($params);
-        $result = $this->httpPost($data);
-        $rep = json_decode($result, true);
-
-
-        if ($rep['result'] == 'sign_error') {
-            if ($this->connect())
-                return $this->httpPostJSON($params);
-        }
-        return $rep;
-    }
-
-    private function createParam($params)
-    {
-        $params['appkey'] = $this->appkey;
-        if ($this->format == 'json') {
-            return json_encode($params);
-        }
-    }
-
-    private function createSign($params)
-    {
-        $sign = null;
-        foreach ($params as $key => $val) {
-            if (isset($key) && isset($val)) {
-                if (is_string($val) || is_numeric($val)) { // 针对非 array object 对象进行sign
-                    $sign .= $key . ($val); //urldecode
-                }
-            }
-        }
-        $sign = md5($sign);
-        return $sign;
-    }
-
-    private function httpPost($data)
-    {
-        $curl = curl_init($this->host);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_USERAGENT, 'GeTui PHP/1.0');
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		$curl_version = curl_version();
-		if ($curl_version['version_number'] >= 462850) {
-		    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT_MS, 30000);
-		    curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
-		}
-        //通过代理访问接口需要在此处配置代理
-        //curl_setopt($curl, CURLOPT_PROXY, '192.168.1.18:808');
-        //请求失败有3次重试机会
-        $result = $this->exeBySetTimes(3, $curl);
-        curl_close($curl);
-        $this->debug("发送请求 post:{$data} return:{$result}");
-        return $result;
-    }
-
-    private function exeBySetTimes($count, $curl)
-    {
-        $result = curl_exec($curl);
-        if (curl_errno($curl)) {
-            $this->debug("请求错误: " . curl_errno($curl));
-
-            if ($count > 0) {
-                $count--;
-                $result = $this->exeBySetTimes($count, $curl);
-            }
-        }
-        return $result;
     }
 }

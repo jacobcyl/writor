@@ -5,7 +5,7 @@ use \Input;
 use App\User;
 use \Redirect;
 use \Validator;
-
+use Hash;
 class UserController extends BaseController {
 
 	/**
@@ -37,24 +37,25 @@ class UserController extends BaseController {
 	public function postCreate()
 	{
 		$rules = [
-			'user_login' => 'required|alpha_dash',
-			'user_pass'  => 'required|confirmed',
-			'user_email' => 'required|email|unique:users',
-			'user_url'   => 'url',
+			'username'=> 'required|alpha_dash|unique:users',
+			'password'  => 'required|confirmed',
+			'email' 	=> 'required|email|unique:users',
+			// 'user_url'   => 'url',
 		];
 
 		$validator = Validator::make(Input::all(), $rules);
 
         	//验证失败
         	if ($validator->fails()) {
-            		return Redirect::back()->withErrors($validator)->withInput(Input::all());
+
+            	return Redirect::back()->withErrors($validator)->withInput(Input::all());
         	}
 
         	$user = new User;
 
        		$this->saveUser($user);
 
-        	return Redirect::back()->withMessage('用户创建成功！', link_to('admin/user/list', '回到用户列表'));
+        	return Redirect::back()->withMessage('用户创建成功！', url('admin/user/list', '回到用户列表'));
 	}
 
 	/**
@@ -79,8 +80,8 @@ class UserController extends BaseController {
 	public function postUpdate($id)
 	{
 		$rules = [
-			'user_pass'  => 'confirmed',
-			'user_url'   => 'url',
+			'password'  => 'confirmed',
+			// 'user_url'   => 'url',
 		];
 
 		$validator = Validator::make(Input::all(), $rules);
@@ -128,11 +129,12 @@ class UserController extends BaseController {
 	 */
 	protected function saveUser($user)
 	{
-		$user->user_login    = Input::get('user_login');
-		$user->user_pass     = Input::get('user_pass');
-		$user->user_email    = Input::get('user_email');
-		$user->user_nicename = Input::get('user_nicename');
-		$user->user_url      = Input::get('user_url');
+		$user->unique_id	= uniqid('', true);
+		$user->username    = Input::get('username');
+		$user->password     = Hash::make(Input::get('password'));
+		$user->email    = Input::get('email');
+		$user->nickname = Input::get('nickname');
+		// $user->user_url      = Input::get('user_url');
 		$user->display_name  = Input::get('display_name');
 
         $user->save();

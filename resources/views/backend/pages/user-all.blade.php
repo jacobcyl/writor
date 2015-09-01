@@ -31,10 +31,10 @@
                         <input type="checkbox" value="{{$user->id}}">
                     </td>
                     <td>
-                        {{$user->user_login}}
+                        {{$user->username}}
                     </td>
-                    <td>{{$user->user_email}}</td>
-                    <td>{{$user->nicename or '无'}}</td>
+                    <td>{{$user->email}}</td>
+                    <td>{{$user->nickname or '无'}}</td>
                     <td>{{$user->status}}</td>
                     <td>{{$user->created_at}}</td>
                     <td>

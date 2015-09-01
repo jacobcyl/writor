@@ -70,7 +70,7 @@ class PostController extends BaseController {
         
         $post->setCategories(Input::get('category', array()));
 
-        return Redirect::back()->withMessage('发布成功！', link_to('admin/post/list', '查看文章列表'));
+        return Redirect::back()->withMessage('发布成功！', url('admin/post/all', '查看文章列表'));
 
     }
 

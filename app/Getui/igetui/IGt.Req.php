@@ -874,6 +874,14 @@ class PushInfo extends PBMessage
     $this->values["9"] = "";
     $this->fields["10"] = "PBInt";
     $this->values["10"] = "";
+    $this->fields["11"] = "PBBool";
+    $this->values["11"] = "";
+    $this->fields["12"] = "PBString";
+    $this->values["12"] = "";
+    $this->fields["13"] = "PBBool";
+    $this->values["13"] = "";
+    $this->fields["14"] = "PBString";
+    $this->values["14"] = "";
   }
   function message()
   {
@@ -954,6 +962,38 @@ class PushInfo extends PBMessage
   function set_contentAvailable($value)
   {
     return $this->_set_value("10", $value);
+  }
+  function invalidAPN()
+  {
+    return $this->_get_value("11");
+  }
+  function set_invalidAPN($value)
+  {
+    return $this->_set_value("11", $value);
+  }
+  function apnJson()
+  {
+    return $this->_get_value("12");
+  }
+  function set_apnJson($value)
+  {
+    return $this->_set_value("12", $value);
+  }
+  function invalidMPN()
+  {
+    return $this->_get_value("13");
+  }
+  function set_invalidMPN($value)
+  {
+    return $this->_set_value("13", $value);
+  }
+  function mpnXml()
+  {
+    return $this->_get_value("14");
+  }
+  function set_mpnXml($value)
+  {
+    return $this->_set_value("14", $value);
   }
 }
 class Transparent extends PBMessage
@@ -1408,6 +1448,74 @@ class StartOSBatchTask extends PBMessage
   function set_expire($value)
   {
     return $this->_set_value("2", $value);
+  }
+}
+class SingleBatchItem extends PBMessage
+{
+  var $wired_type = PBMessage::WIRED_LENGTH_DELIMITED;
+  public function __construct($reader=null)
+  {
+    parent::__construct($reader);
+    $this->fields["1"] = "PBInt";
+    $this->values["1"] = "";
+    $this->fields["2"] = "PBString";
+    $this->values["2"] = "";
+  }
+  function seqId()
+  {
+    return $this->_get_value("1");
+  }
+  function set_seqId($value)
+  {
+    return $this->_set_value("1", $value);
+  }
+  function data()
+  {
+    return $this->_get_value("2");
+  }
+  function set_data($value)
+  {
+    return $this->_set_value("2", $value);
+  }
+}
+class SingleBatchRequest extends PBMessage
+{
+  var $wired_type = PBMessage::WIRED_LENGTH_DELIMITED;
+  public function __construct($reader=null)
+  {
+    parent::__construct($reader);
+    $this->fields["1"] = "PBString";
+    $this->values["1"] = "";
+    $this->fields["2"] = "SingleBatchItem";
+    $this->values["2"] = array();
+  }
+  function batchId()
+  {
+    return $this->_get_value("1");
+  }
+  function set_batchId($value)
+  {
+    return $this->_set_value("1", $value);
+  }
+  function batchItem($offset)
+  {
+    return $this->_get_arr_value("2", $offset);
+  }
+  function add_batchItem()
+  {
+    return $this->_add_arr_value("2");
+  }
+  function set_batchItem($index, $value)
+  {
+    $this->_set_arr_value("2", $index, $value);
+  }
+  function remove_last_batchItem()
+  {
+    $this->_remove_last_arr_value("2");
+  }
+  function batchItem_size()
+  {
+    return $this->_get_arr_size("2");
   }
 }
 class PushListMessage extends PBMessage

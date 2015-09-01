@@ -12,21 +12,22 @@
             <div class="panel-body">
                 <form action="{{url('/admin/user/create')}}" method="post" accept-charset="utf-8" class="form-horizontal">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    
                     <div class="form-group">
                         <label class="col-sm-2 control-label">用户名</label>
                         <div class="col-sm-10">
-                            <input type="text" name="user_login" class="form-control" placeholder="" value="{{Input::old('user_login')}}"/>
+                            <input type="text" name="username" class="form-control" placeholder="" value="{{Input::old('username')}}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">邮箱</label>
                         <div class="col-sm-10">
-                            <input type="text" name="user_email" class="form-control" placeholder="例如：http://writor.me" value="{{Input::old('user_email')}}"></div>
+                            <input type="text" name="email" class="form-control" placeholder="例如：http://writor.me" value="{{Input::old('email')}}"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">昵称</label>
                         <div class="col-sm-10">
-                            <input type="text" name="user_nicename" class="form-control" placeholder="" value="{{Input::old('user_nicename')}}"/>
+                            <input type="text" name="nickname" class="form-control" placeholder="" value="{{Input::old('nickname')}}"/>
                         </div>
                     </div>
                     <div class="form-group">

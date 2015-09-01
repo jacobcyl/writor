@@ -1,0 +1,622 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"class",
+				"class"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "AuthController.php",
+			"settings":
+			{
+				"buffer_size": 3570,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/wamp/www/backend/resources/views/backend/layout.blade.php",
+			"settings":
+			{
+				"buffer_size": 11040,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/wamp/www/backend/backend.sublime-project",
+			"settings":
+			{
+				"buffer_size": 235,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Context",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Watch",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "Xdebug Stack",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "=> E:\\wamp\\www\\backend\\app\\Http\\Controllers\\backend\\AuthController.php\n	|+| 44\n	|+| 53\n=> E:\\wamp\\www\\backend\\app\\Http\\Controllers\\backend\\UserController.php\n	|+| 1\n=> E:\\wamp\\www\\backend\\public\\index.php\n	|+| 1\n=> E:\\wamp\\www\\backend\\resources\\views\\backend\\layout.blade.php\n	|-| 286\n=> E:\\wamp\\www\\windex.php\n	|+| 1\n	|+| 36\n	|+| 52\n",
+			"settings":
+			{
+				"buffer_size": 334,
+				"line_ending": "Windows",
+				"name": "Xdebug Breakpoint",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 265.0,
+		"last_filter": "xdeb",
+		"selected_items":
+		[
+			[
+				"xdeb",
+				"Xdebug: Restart Session"
+			],
+			[
+				"pac",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"xd",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"packagecontrol",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 153.0,
+		"history":
+		[
+			"php companion",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/wamp/www/backend",
+		"/E/wamp/www/backend/app",
+		"/E/wamp/www/backend/app/Http",
+		"/E/wamp/www/backend/app/Http/Controllers",
+		"/E/wamp/www/backend/app/Http/Controllers/backend",
+		"/E/wamp/www/backend/public",
+		"/E/wamp/www/backend/resources",
+		"/E/wamp/www/backend/resources/views",
+		"/E/wamp/www/backend/resources/views/backend"
+	],
+	"file_history":
+	[
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/E/wamp/www/backend/backend.sublime-project",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/backend.sublime-project",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/Xdebug.sublime-settings",
+		"/E/wamp/www/backend/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php",
+		"/E/wamp/www/backend/vendor/laravel/framework/src/Illuminate/Auth/Guard.php",
+		"/C/Users/Administrator/Downloads/CCP_REST_SMS_DEMO_JAVA_v2.6r/CCP_REST_SMS_DEMO_JAVA_v2.6r/demo/src/com/cloopen/rest/demo/SDKTestSendTemplateSMS.java",
+		"/E/wamp/www/windex.php",
+		"/E/wamp/www/backend.sublime-project",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/UserController.php",
+		"/E/wamp/bin/php/php5.5.12/php.ini",
+		"/E/wamp/www/backend/public/index.php",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/Codebug/Default.sublime-keymap",
+		"/E/wamp/www/backend/storage/logs/laravel.log",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/E/wamp/www/backend/vendor/laravel/framework/src/Illuminate/Contracts/Validation/Validator.php",
+		"/E/wamp/www/backend/vendor/laravel/framework/src/Illuminate/Contracts/Support/MessageProvider.php",
+		"/E/wamp/www/backend/resources/views/backend/pages/post-all.blade.php",
+		"/E/wamp/www/backend/storage/framework/views/bdbd550da358b47f96c874722ee4b912",
+		"/E/wamp/www/backend/app/Exceptions/Handler.php",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/PostController.php",
+		"/E/wamp/www/backend/database/seeds/UserTableSeeder.php",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/AuthController.php",
+		"/E/wamp/www/backend/resources/lang/cn/validation.php",
+		"/E/wamp/www/backend/database/migrations/2014_07_02_230147_migration_cartalyst_sentinel.php",
+		"/E/wamp/www/backend/storage/framework/views/8b916597ab11a1e1dd2df53af46cf804",
+		"/E/wamp/www/backend/resources/views/backend/pages/user-all.blade.php",
+		"/E/wamp/www/backend/app/Http/Controllers/Auth/AuthController.php",
+		"/E/wamp/www/backend/resources/views/backend/pages/user-new.blade.php",
+		"/E/wamp/www/backend/app/Resource.php",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings",
+		"/E/wamp/www/backend/app/User.php",
+		"/E/wamp/www/backend/app/Http/Middleware/Authenticate.php",
+		"/E/wamp/www/backend/server.php",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/ResourceController.php",
+		"/E/wamp/www/backend/config/app.php",
+		"/E/wamp/www/backend/database/migrations/2014_02_18_142111_create_users.php",
+		"/E/wamp/www/backend/database/migrations/2014_02_22_084919_create_password_reminders_table.php",
+		"/E/wamp/www/backend/vendor/cartalyst/sentinel/src/Laravel/SentinelServiceProvider.php",
+		"/E/wamp/www/backend/composer.json",
+		"/E/wamp/www/backend/config/database.php",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/test.php",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/phpcs.sublime-settings",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/Base File.sublime-settings",
+		"/E/wamp/bin/php/php5.5.12/phpcs.bat",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/E/wamp/www/backend/app/Http/Requests/Request.php",
+		"/E/wamp/www/backend/app/Http/Controllers/backend/BaseController.php",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/PHP Companion.sublime-settings",
+		"/C/Users/Administrator/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-mousemap"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"E:\\wamp\\www\\backend"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"<span class=\"badge badge-info\">",
+			"Tree",
+			"Validator",
+			"<li class=\"pad-y-5\">",
+			"user_login",
+			"已经存在",
+			"不能为空",
+			"<li class=\"pad-y-5\"><span class=\"badge badge-info\">邮箱</span> 不能为空.</li>",
+			"邮箱 不能为空",
+			"Searching",
+			"邮箱",
+			"user_pass",
+			"f10"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "AuthController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3570,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								766,
+								766
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 627.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/E/wamp/www/backend/resources/views/backend/layout.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11040,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8790,
+								8790
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5073.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/E/wamp/www/backend/backend.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 235,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								155,
+								155
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								334,
+								334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.7,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "backend.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"17":
+				{
+					"group": 0,
+					"index": 1
+				},
+				"18":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"23":
+				{
+					"group": 0,
+					"index": 2
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 293.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

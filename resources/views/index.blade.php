@@ -37,7 +37,7 @@
                         <a href="#about">About</a>
                     </li>
                     <li>
-                        <a href="http://github.com/joychao/writor">Github</a>
+                        <a href="#">Github</a>
                     </li>
                     <li>
                         <a href="#services">Documentation</a>
@@ -46,7 +46,7 @@
                         <a href="#services">Blog</a>
                     </li>
                     <li>
-                        <a href="http://github.com/joychao/writor/issues" target="_blank">Contact</a>
+                        <a href="#" target="_blank">Contact</a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse --> 

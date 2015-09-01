@@ -72,7 +72,6 @@ var Login = Login || {};
 						{
 							// Login status [success|invalid]
 							var login_status = response.login_status;
-															
 							// Form is fully completed, we update the percentage
 							Login.setPercentage(100);
 
