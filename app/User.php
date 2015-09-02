@@ -14,11 +14,6 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	const STATUS_DISABLED = 0; //禁用
 	use Authenticatable, CanResetPassword;
 
-    // blowfish
-    private static $algo = '$2a';
-    // cost parameter
-    private static $cost = '$10';
-
 	/**
 	 * The database table used by the model.
 	 *
@@ -116,15 +111,5 @@ class User extends Eloquent implements AuthenticatableContract, CanResetPassword
 	{
 		return 'remember_token';
 	}
-
-	public function getAuthSalt()
-	{
-		return self::$algo . self::$cost . '$' . self::unique_salt();
-	}
-
-    // mainly for internal use
-    public static function unique_salt() {
-        return substr(sha1(mt_rand()), 0, 22);
-    }
 
 }

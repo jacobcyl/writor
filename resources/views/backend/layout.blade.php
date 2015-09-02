@@ -36,7 +36,7 @@
         <!-- logo -->
         <div class="logo">
           <a href="{{url('admin')}}">
-            <h1>LingTong</h1>
+            <img src="{{ asset('backend/images/logo.png') }}">
           </a>
         </div>
         <!-- logo collapse icon -->
@@ -62,7 +62,7 @@
         <li>
           <a href="{{ url('/admin/mall/home') }}">
             <i class="entypo-dropbox"></i>
-            <span>货场</span>
+            <span>货场管理</span>
           </a>
           <ul>
             <li>
@@ -71,18 +71,24 @@
                 <span>现货资源</span>
               </a>
             </li>
+            <li>
+              <a href="{{ url('/admin/certificate/all') }}">
+                <i class="entypo-doc"></i>
+                <span>资料审核管理</span>
+              </a>
+            </li>
           </ul>
         </li>
         <li>
           <a href="{{ url('/admin/post/all') }}">
             <i class="entypo-doc-text-inv"></i>
-            <span>文章</span>
+            <span>新闻</span>
           </a>
           <ul>
             <li>
               <a href="{{ url('/admin/post/all') }}">
                 <i class="entypo-list"></i>
-                <span>所有文章</span>
+                <span>所有新闻</span>
               </a>
             </li>
 
@@ -120,32 +126,32 @@
 
         <li>
           <a href="{{ url('/admin/push/all') }}">
-            <i class="entypo-message"></i>
+            <i class="entypo-mail"></i>
             <span>消息推送</span>
           </a>
           <ul>
             <li>
               <a href="{{ url('/admin/push/build') }}">
-                <i class="entypo-make"></i>
+                <i class="entypo-pencil"></i>
                 <span>编辑消息</span>
               </a>
             </li>
             <li>
               <a href="{{ url('/admin/push/record') }}">
-                <i class="entypo-log"></i>
+                <i class="entypo-chart-area"></i>
                 <span>推送日志</span>
               </a>
             </li>
             <li>
               <a href="{{ url('/admin/push/analysis') }}">
-                <i class="entypo-analysis"></i>
+                <i class="entypo-chart-line"></i>
                 <span>推送分析</span>
               </a>
             </li>
             <li>
               <a href="{{ url('/admin/push/setting') }}">
-                <i class="entypo-setting"></i>
-                <span>推送分析</span>
+                <i class="entypo-tools"></i>
+                <span>推送设置</span>
               </a>
             </li>
           </ul>
@@ -292,7 +298,7 @@
       @yield('content')
       <!-- Footer -->
       <footer class="main">
-        &copy; {{date('Y')}} <strong>Writor</strong>
+        &copy; {{date('Y')}} <strong>LingTong</strong>
         Powered by 
         <a href="#" target="_blank">Writor Blog Framework & Laravel </a>
       </footer>

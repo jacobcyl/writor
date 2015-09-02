@@ -33,4 +33,5 @@ Route::group(array('prefix' => '/admin', 'middleware' => 'auth'), function(){
     Route::controller('system', 'Backend\SystemController');
     Route::controller('category', 'Backend\CategoryController');
     Route::controller('push', 'Backend\PushController');
+    Route::controller('certificate', 'Backend\CertificateController');
 });

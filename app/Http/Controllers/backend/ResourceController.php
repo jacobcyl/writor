@@ -27,7 +27,7 @@ class ResourceController extends Controller
     }
 
     public function getAll(){
-        $resources = Resource::with('category')->paginate(5);
+        $resources = Resource::with('category')->with('user')->with('city')->paginate(5);
         return View::make('backend.pages.resource-all')->withResources($resources);
     }
 

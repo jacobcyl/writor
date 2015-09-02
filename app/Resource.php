@@ -15,4 +15,14 @@ class Resource extends Model
         //print_r($categorys);
         return $categories;
     }
+
+    public function user(){
+        $user = $this->belongsTo('App\User', 'user_id', 'unique_id');
+        return $user;
+    }
+
+    public function city(){
+        $city = $this->belongsTo('App\City', 'place', 'Id');
+        return $city;
+    }
 }
