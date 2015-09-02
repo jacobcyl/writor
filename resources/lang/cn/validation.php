@@ -96,6 +96,7 @@ return array(
     'attributes' => array(
                     'name' => '<span class="badge badge-info">名称</span>',
                     'username' => '<span class="badge badge-info">用户名</span>',
+                     'user_login' => '<span class="badge badge-info">用户名</span>',
                     'realname' => '<span class="badge badge-info">真实姓名</span>',
                     'email'    => '<span class="badge badge-info">邮箱</span>',
                     'password' => '<span class="badge badge-info">密码</span>',
